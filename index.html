@@ -3,8 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Система заявок</title>
+  <title>Система заявок PRO</title>
   <style>
+    :root {
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --text: #1f2937;
+      --border: #d1d5db;
+      --primary: #2563eb;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --warning: #f59e0b;
+    }
+
+    body.dark {
+      --bg: #111827;
+      --card: #1f2937;
+      --text: #f9fafb;
+      --border: #374151;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -13,156 +31,196 @@
     }
 
     body {
-      background: #f4f6f9;
-      color: #222;
+      background: var(--bg);
+      color: var(--text);
+      transition: 0.3s;
     }
 
     header {
-      background: #1f2937;
+      background: linear-gradient(135deg, #2563eb, #1e40af);
       color: white;
-      padding: 20px;
+      padding: 25px;
       text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1300px;
       margin: 30px auto;
       padding: 20px;
     }
 
+    .topbar {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: 350px 1fr;
+      grid-template-columns: 380px 1fr;
       gap: 20px;
     }
 
     .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      background: var(--card);
+      border-radius: 18px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      transition: 0.3s;
+    }
+
+    h1 {
+      margin-bottom: 10px;
     }
 
     h2 {
-      margin-bottom: 15px;
-      color: #111827;
+      margin-bottom: 18px;
     }
 
     label {
       display: block;
       margin-top: 12px;
       margin-bottom: 6px;
-      font-size: 14px;
       font-weight: bold;
+      font-size: 14px;
     }
 
     input,
     textarea,
     select {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
       font-size: 14px;
     }
 
     textarea {
-      resize: vertical;
       min-height: 100px;
+      resize: vertical;
     }
 
     button {
-      margin-top: 16px;
       width: 100%;
       padding: 12px;
       border: none;
-      border-radius: 8px;
-      background: #2563eb;
+      border-radius: 10px;
+      margin-top: 14px;
+      background: var(--primary);
       color: white;
       font-size: 15px;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.25s;
+      font-weight: bold;
     }
 
     button:hover {
-      background: #1d4ed8;
+      transform: translateY(-2px);
+      opacity: 0.92;
+    }
+
+    .danger {
+      background: var(--danger);
     }
 
     .filters {
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 20px;
-      flex-wrap: wrap;
     }
 
-    .filters select,
-    .filters input {
+    .filters input,
+    .filters select {
       flex: 1;
       min-width: 180px;
     }
 
     .ticket {
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
-      transition: 0.2s;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      transition: 0.25s;
     }
 
     .ticket:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
     }
 
     .ticket-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .status {
-      padding: 5px 10px;
+      padding: 6px 12px;
       border-radius: 20px;
       color: white;
       font-size: 12px;
+      font-weight: bold;
     }
 
-    .open {
-      background: #16a34a;
-    }
-
-    .progress {
-      background: #f59e0b;
-    }
-
-    .closed {
-      background: #dc2626;
-    }
+    .open { background: var(--success); }
+    .progress { background: var(--warning); }
+    .closed { background: var(--danger); }
 
     .meta {
-      font-size: 13px;
-      color: #6b7280;
       margin-top: 10px;
-    }
-
-    .role-box {
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      font-size: 13px;
+      color: gray;
     }
 
     .role-badge {
-      padding: 6px 12px;
-      border-radius: 20px;
       background: #111827;
       color: white;
+      padding: 8px 14px;
+      border-radius: 30px;
       font-size: 13px;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .theme-btn {
+      max-width: 220px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      padding: 18px;
+      border-radius: 14px;
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .stat h3 {
+      font-size: 28px;
+      margin-bottom: 8px;
     }
 
     @media (max-width: 900px) {
       .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
         grid-template-columns: 1fr;
       }
     }
@@ -171,21 +229,52 @@
 <body>
 
 <header>
-  <h1>Система заявок</h1>
-  <p>Мини‑сайт для управления заявками</p>
+  <h1>Система заявок PRO</h1>
+  <p>Современная система управления заявками</p>
 </header>
 
 <div class="container">
 
+  <div class="topbar">
+    <button class="theme-btn" onclick="toggleTheme()">Сменить тему</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <h3 id="totalCount">0</h3>
+      <p>Всего заявок</p>
+    </div>
+
+    <div class="stat">
+      <h3 id="openCount">0</h3>
+      <p>Открытых</p>
+    </div>
+
+    <div class="stat">
+      <h3 id="closedCount">0</h3>
+      <p>Закрытых</p>
+    </div>
+  </div>
+
   <div class="role-box card">
-    <label for="roleSelect">Роль:</label>
+    <h2>Пользователи и роли</h2>
+
+    <label>Логин</label>
+    <input type="text" id="login" placeholder="Введите логин">
+
+    <label>Пароль</label>
+    <input type="password" id="password" placeholder="Введите пароль">
+
+    <label>Создать роль</label>
     <select id="roleSelect">
       <option value="user">Пользователь</option>
       <option value="manager">Менеджер</option>
       <option value="admin">Администратор</option>
     </select>
 
-    <div class="role-badge" id="roleBadge">Пользователь</div>
+    <button onclick="loginUser()">Войти</button>
+
+    <div class="role-badge" id="roleBadge">Гость</div>
   </div>
 
   <div class="grid">
@@ -237,41 +326,47 @@
 </div>
 
 <script>
-  let tickets = JSON.parse(localStorage.getItem('tickets')) || [
-    {
-      id: 1,
-      title: 'Ошибка авторизации',
-      description: 'Пользователь не может войти в систему',
-      priority: 'Высокий',
-      status: 'Открыта',
-      created: new Date().toLocaleString()
-    },
-    {
-      id: 2,
-      title: 'Обновление дизайна',
-      description: 'Необходимо изменить цвет кнопок',
-      priority: 'Средний',
-      status: 'В работе',
-      created: new Date().toLocaleString()
+  let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+
+  let currentUser = {
+    login: 'Гость',
+    role: 'user'
+  };
+
+  function saveTickets() {
+    localStorage.setItem('tickets', JSON.stringify(tickets));
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle('dark');
+    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+  }
+
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark');
+  }
+
+  function loginUser() {
+    const login = document.getElementById('login').value;
+    const password = document.getElementById('password').value;
+    const role = document.getElementById('roleSelect').value;
+
+    if (!login || !password) {
+      alert('Введите логин и пароль');
+      return;
     }
-  ];
 
-  const roleSelect = document.getElementById('roleSelect');
-  const roleBadge = document.getElementById('roleBadge');
+    currentUser = { login, role };
 
-  roleSelect.addEventListener('change', () => {
-    const roleMap = {
+    const roles = {
       user: 'Пользователь',
       manager: 'Менеджер',
       admin: 'Администратор'
     };
 
-    roleBadge.textContent = roleMap[roleSelect.value];
-    renderTickets();
-  });
+    document.getElementById('roleBadge').innerHTML = `Вы вошли как: ${login} (${roles[role]})`;
 
-  function saveTickets() {
-    localStorage.setItem('tickets', JSON.stringify(tickets));
+    renderTickets();
   }
 
   function createTicket() {
@@ -284,28 +379,25 @@
       return;
     }
 
-    const ticket = {
+    tickets.unshift({
       id: Date.now(),
       title,
       description,
       priority,
       status: 'Открыта',
-      created: new Date().toLocaleString()
-    };
+      created: new Date().toLocaleString(),
+      author: currentUser.login
+    });
 
-    tickets.unshift(ticket);
     saveTickets();
     renderTickets();
 
-    document.getElementById('title').value = '';
-    document.getElementById('description').value = '';
+    title.value = '';
   }
 
   function changeStatus(id) {
-    const role = roleSelect.value;
-
-    if (role === 'user') {
-      alert('У пользователя нет доступа к изменению статуса');
+    if (currentUser.role === 'user') {
+      alert('Недостаточно прав');
       return;
     }
 
@@ -313,25 +405,28 @@
 
     const statuses = ['Открыта', 'В работе', 'Закрыта'];
     let index = statuses.indexOf(ticket.status);
-
-    index = (index + 1) % statuses.length;
-    ticket.status = statuses[index];
+    ticket.status = statuses[(index + 1) % statuses.length];
 
     saveTickets();
     renderTickets();
   }
 
   function deleteTicket(id) {
-    const role = roleSelect.value;
-
-    if (role !== 'admin') {
-      alert('Только администратор может удалять заявки');
+    if (currentUser.role !== 'admin') {
+      alert('Удаление доступно только администратору');
       return;
     }
 
     tickets = tickets.filter(t => t.id !== id);
+
     saveTickets();
     renderTickets();
+  }
+
+  function updateStats() {
+    document.getElementById('totalCount').textContent = tickets.length;
+    document.getElementById('openCount').textContent = tickets.filter(t => t.status === 'Открыта').length;
+    document.getElementById('closedCount').textContent = tickets.filter(t => t.status === 'Закрыта').length;
   }
 
   function renderTickets() {
@@ -339,27 +434,19 @@
     const search = document.getElementById('search').value.toLowerCase();
     const statusFilter = document.getElementById('statusFilter').value;
     const priorityFilter = document.getElementById('priorityFilter').value;
-    const role = roleSelect.value;
 
     container.innerHTML = '';
 
     const filtered = tickets.filter(ticket => {
-      const matchesSearch =
-        ticket.title.toLowerCase().includes(search) ||
-        ticket.description.toLowerCase().includes(search);
+      const searchMatch = ticket.title.toLowerCase().includes(search) || ticket.description.toLowerCase().includes(search);
+      const statusMatch = statusFilter === 'all' || ticket.status === statusFilter;
+      const priorityMatch = priorityFilter === 'all' || ticket.priority === priorityFilter;
 
-      const matchesStatus =
-        statusFilter === 'all' || ticket.status === statusFilter;
-
-      const matchesPriority =
-        priorityFilter === 'all' || ticket.priority === priorityFilter;
-
-      return matchesSearch && matchesStatus && matchesPriority;
+      return searchMatch && statusMatch && priorityMatch;
     });
 
-    if (filtered.length === 0) {
-      container.innerHTML = '<p>Заявки не найдены</p>';
-      return;
+    if (!filtered.length) {
+      container.innerHTML = '<p>Нет заявок</p>';
     }
 
     filtered.forEach(ticket => {
@@ -380,25 +467,20 @@
         <p>${ticket.description}</p>
 
         <div class="meta">
-          <p><strong>Приоритет:</strong> ${ticket.priority}</p>
-          <p><strong>Создано:</strong> ${ticket.created}</p>
+          <p><b>Автор:</b> ${ticket.author}</p>
+          <p><b>Приоритет:</b> ${ticket.priority}</p>
+          <p><b>Дата:</b> ${ticket.created}</p>
         </div>
 
-        ${role !== 'user' ? `
-          <button onclick="changeStatus(${ticket.id})">
-            Изменить статус
-          </button>
-        ` : ''}
+        ${currentUser.role !== 'user' ? `<button onclick="changeStatus(${ticket.id})">Изменить статус</button>` : ''}
 
-        ${role === 'admin' ? `
-          <button onclick="deleteTicket(${ticket.id})" style="background:#dc2626; margin-top:10px;">
-            Удалить
-          </button>
-        ` : ''}
+        ${currentUser.role === 'admin' ? `<button class="danger" onclick="deleteTicket(${ticket.id})">Удалить</button>` : ''}
       `;
 
       container.appendChild(div);
     });
+
+    updateStats();
   }
 
   renderTickets();
